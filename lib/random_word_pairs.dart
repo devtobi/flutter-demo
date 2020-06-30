@@ -9,6 +9,7 @@ class RandomWordPairs extends StatefulWidget {
 class RandomWordPairsState extends State<RandomWordPairs> {
   // These variables are part of the state of the widget and can change throughout the lifecycle
   final _pairs = <WordPair>[];
+  final Set<WordPair> _checked = Set<WordPair>();
   final _biggerFont = const TextStyle(fontSize: 18.0);
 
   @override
@@ -44,8 +45,17 @@ class RandomWordPairsState extends State<RandomWordPairs> {
 
   // Helper function to create a ListItem, which does in this case contain a WordPair
   Widget _buildPair(WordPair pair) {
+    final bool isChecked = _checked.contains(pair);
     return ListTile(
       title: Text(pair.asPascalCase, style: _biggerFont),
+      trailing: Icon(
+          isChecked ? Icons.check_circle : Icons.check_circle_outline,
+          color: isChecked ? Colors.green : Colors.black),
+      onTap: () {
+        setState(() {
+          isChecked ? _checked.remove(pair) : _checked.add(pair);
+        });
+      },
     );
   }
 }
